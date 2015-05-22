@@ -1,0 +1,34 @@
+.mintCarousel{
+	overflow: hidden;
+	position: relative;
+}
+
+.mintCarousel .page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: none;
+    -ms-touch-action: none;
+    touch-action: none;
+    overflow: hidden;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+	-webkit-background-size: cover;
+	background-size: cover;
+}
+
+.mintCarousel .page.active,
+.mintCarousel .page.prev,
+.mintCarousel .page.next,
+.mintCarousel .page.curr {
+    display: block;
+    
+}
+
+.mintCarousel .page.prev,
+.mintCarousel .page.next {
+    z-index: 2;
+}
