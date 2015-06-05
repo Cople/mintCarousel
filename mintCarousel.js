@@ -14,6 +14,7 @@
             draggable: true,
             hidePages: false,
             useMouse: false,
+            freeMode: true,
             stopPropagation: true,
             disabled: false,
             disablePrevOnPages: [],
@@ -246,12 +247,20 @@
             if (type != "restore" && settings.afterChange) settings.afterChange.call(self, currIdx, lastIdx, pages[currIdx]);
         };
 
+        function removeAllEventListener() {
+            wrapper.removeEventListener(touchEventsNames.move, touchmove, false);
+            wrapper.removeEventListener(touchEventsNames.end, touchend, false);
+            wrapper.removeEventListener(touchEventsNames.cancel, touchend, false);
+        };
+
         function touchstart(event) {
             if (settings.stopPropagation) event.stopPropagation();
             if (disabled || moving || !isPrimaryTouch(event)) return false;
-            var pos = getTouchEvent(event)[pageDir];
+            var pos = getTouchEvent(event);
             firstTouch = {
-                pos: pos,
+                pos: pos[pageDir],
+                x: pos.pageX,
+                y: pos.pageY,
                 time: Date.now()
             };
             wrapper.addEventListener(touchEventsNames.move, touchmove, false);
@@ -262,15 +271,32 @@
         function touchmove(event) {
             if (!isPrimaryTouch(event)) return false;
             var lastDelta = delta;
-            var pos = getTouchEvent(event)[pageDir];
+            var pos = getTouchEvent(event);
             lastTouch = {
-                pos: pos,
+                pos: pos[pageDir],
+                x: pos.pageX,
+                y: pos.pageY,
                 time: Date.now()
             };
             delta = lastTouch.pos - firstTouch.pos;
+
             if (!moving) {
+                if (!settings.freeMode) {
+                    if (Math.abs(lastTouch.x - firstTouch.x) > Math.abs(lastTouch.y - firstTouch.y)) {
+                        if (isV) {
+                            return removeAllEventListener();
+                        };
+                    } else {
+                        if (!isV) {
+                            return removeAllEventListener();
+                        };
+                    };
+                };
                 prepare();
             } else {
+                if (!settings.freeMode) {
+                    event.stopPropagation();
+                };
                 if (!settings.bounce && ((delta < 0 && !canNext()) || (delta > 0 && !canPrev()))) {
                     firstTouch.pos = lastTouch.pos;
                     firstTouch.time = lastTouch.time;
@@ -302,9 +328,7 @@
         };
 
         function touchend(event) {
-            wrapper.removeEventListener(touchEventsNames.move, touchmove, false);
-            wrapper.removeEventListener(touchEventsNames.end, touchend, false);
-            wrapper.removeEventListener(touchEventsNames.cancel, touchend, false);
+            removeAllEventListener();
             if (!moving) return false;
             var pct = delta / range;
             var speed = delta / (lastTouch.time - firstTouch.time);
@@ -363,6 +387,9 @@
             }, settings.duration + 50);
         };
 
+        this.getCurrentIndex = function() {
+            return currIdx;
+        };
         this.getCurrentPage = function(index) {
             return pages[currIdx];
         };

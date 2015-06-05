@@ -4,7 +4,9 @@ new mintCarousel("#cubeDemo", {
     height: 300,
     fade: true,
     vertical: false,
-    useMouse: true
+    useMouse: true,
+    freeMode: false,
+    stopPropagation: false
 });
 
 new mintCarousel("#cubeDemo2", {

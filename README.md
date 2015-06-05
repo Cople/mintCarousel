@@ -30,6 +30,7 @@ var mc = new mintCarousel("#demo", options);
      draggable: true,
      hidePages: false,
      useMouse: false,
+     freeMode: true,
      stopPropagation: true,
      disabled: false,
      disablePrevOnPages: [],
