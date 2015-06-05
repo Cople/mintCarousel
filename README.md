@@ -1,10 +1,10 @@
-# mintCarousel
+# mintCarousel.js
 移动端页面滑动组件
 
 ### Demo
 
-![Demo](http://chart.apis.google.com/chart?cht=qr&chs=200x200&chl=http%3A//cople.github.io/mintCarousel/&chld=H|0)
-[Demo](http://cople.github.io/mintCarousel/)
+![Demo](http://chart.apis.google.com/chart?cht=qr&chs=200x200&chl=http%3A//cople.github.io/mintCarousel.js/&chld=H|0)
+[Demo](http://cople.github.io/mintCarousel.js/)
 
 ### Usage
 
